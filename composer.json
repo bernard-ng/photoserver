@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Ng\\Photoserver\\" : "/src"
+            "Ng\\Photoserver\\" : "src/"
         }
     }
 }
