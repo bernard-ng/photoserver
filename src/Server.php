@@ -1,5 +1,6 @@
 <?php
 namespace Ng\Photoserver;
+use Intervention\Image\ImageManager;
 
 
 /**
@@ -10,11 +11,104 @@ class Server
 {
 
     /**
-     * Server constructor.
-     * @param string $path
+     * The Directory that is containing photos or subdirectories of photos
+     * @var string
      */
-    public function __construct(string $path)
+    private $mainDir;
+
+    /**
+     * Server constructor.
+     * @param string $mainDir
+     */
+    public function __construct(string $mainDir)
     {
-        $this->path = $path;
+       try {
+           $this->mainDir = new \DirectoryIterator($mainDir);
+       } catch (\Exception $e) {
+           die($e);
+       }
+    }
+
+
+    /**
+     * Get Subdirectories in the mainDir
+     * @return array
+     */
+    private function getSubDirs(): array
+    {
+        $subDirs = [];
+        foreach ($this->mainDir as $dir) {
+            if ($dir->getFilename() != '.' && $dir->getFilename() != '..' && !empty($dir->getFilename())) {
+                if (is_dir($dir->getPathname())) {
+                    $subDirs[] = $dir->getPathname();
+                }
+            }
+        }
+
+        return $subDirs;
+    }
+
+
+    /**
+     * Get a photo in the main directory
+     * @param int $fileIndex
+     * @return null|string
+     */
+    private function getInMainDir(int $fileIndex = 0): ?string
+    {
+        $files = [];
+        foreach ($this->mainDir as $dir) {
+            if ($dir->getFilename() != '.' && $dir->getFilename() != '..' && !empty($dir->getFilename())) {
+                $files[] = $dir->getPathname();
+            }
+        }
+
+        return $files[$fileIndex] ?? $files[0] ?? null;
+    }
+
+
+    /**
+     * Get a photos in a subdirectory
+     * @param int $index
+     * @param int $fileIndex
+     * @return null|string
+     */
+    private function getInSubDirs(int $index = 0, int $fileIndex = 0): ?string
+    {
+        $subDirsLength = count($this->getSubDirs());
+        $index = ($index > $subDirsLength) ? $subDirsLength : ($index < 0) ? 0 : $index;
+        $currentDir = $this->getSubDirs()[$index];
+        $files = [];
+
+        try {
+            $currentDir = new \DirectoryIterator($currentDir);
+        } catch (\Exception $e) {
+            die($e);
+        }
+
+        foreach ($currentDir as $dir) {
+            if ($dir->getFilename() != '.' && $dir->getFilename() != '..') {
+                $files[] = $dir->getPathname();
+            }
+        }
+
+        $file = $files[$fileIndex] ?? $files[0] ?? null;
+        return (is_file($file)) ? $file : null;
+    }
+
+
+    /**
+     * Render the photo in the web browser
+     * @param int $dirIndex
+     * @param int $fileIndex
+     */
+    public function render(int $dirIndex, int $fileIndex) {
+        try {
+            $image = new ImageManager();
+            $image = $image->make($this->getInSubDirs($dirIndex, $fileIndex));
+            echo $image->response('jpeg');
+        } catch (\Exception $e) {
+            die($e);
+        }
     }
 }
