@@ -63,7 +63,8 @@ class Server
             }
         }
 
-        return $files[$fileIndex] ?? $files[0] ?? null;
+        $file = $files[mt_rand($fileIndex, count($files) - 1)] ?? $files[0] ?? null;
+        return (is_file($file)) ? $file : null;
     }
 
 
@@ -77,7 +78,7 @@ class Server
     {
         $subDirsLength = count($this->getSubDirs());
         $index = ($index > $subDirsLength) ? $subDirsLength : ($index < 0) ? 0 : $index;
-        $currentDir = $this->getSubDirs()[$index];
+        $currentDir = $this->getSubDirs()[mt_rand(0, count($this->getSubDirs()) - 1)] ?? $this->getSubDirs()[$index];
         $files = [];
 
         try {
@@ -92,7 +93,7 @@ class Server
             }
         }
 
-        $file = $files[$fileIndex] ?? $files[0] ?? null;
+        $file = $files[mt_rand($fileIndex, count($files) - 1)] ?? $files[0] ?? null;
         return (is_file($file)) ? $file : null;
     }
 
@@ -102,7 +103,7 @@ class Server
      * @param int $dirIndex
      * @param int $fileIndex
      */
-    public function render(int $dirIndex, int $fileIndex) {
+    public function render(int $dirIndex = 0, int $fileIndex = 0) {
         try {
             $image = new ImageManager();
             $image = $image->make($this->getInSubDirs($dirIndex, $fileIndex));
