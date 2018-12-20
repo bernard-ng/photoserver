@@ -1,7 +1,16 @@
 {
     "name": "bernard-ng/photoserver",
-    "description": "\"offline photoserver for development, serves photos that are hosted on your computer via a web interface\"",
+    "description": "offline photoserver for development, serves photos that are hosted on your computer via a web interface",
     "type": "project",
+    "keywords": [
+        "server",
+        "photos",
+        "offline",
+        "host",
+        "lorem ipsum"
+    ],
+    "homepage": "https://github.com/bernard-ng/photoserver",
+    "readme": "/README.md",
     "license": "MIT",
     "authors": [
         {
