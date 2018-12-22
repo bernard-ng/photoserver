@@ -58,6 +58,11 @@ class Server
     {
         $files = [];
         foreach ($this->mainDir as $dir) {
+            if ($mainDir->getFilename() != '.' && $mainDir->getFilename() != '..') {
+                if (in_array(strtolower($mainDir->getExtension()), ['jpg', 'png', 'gif', 'jpeg'])) {
+                    $files[] = $dir->getPathname();
+                }
+             }
             if ($dir->getFilename() != '.' && $dir->getFilename() != '..' && !empty($dir->getFilename())) {
                 $files[] = $dir->getPathname();
             }
@@ -87,9 +92,11 @@ class Server
             die($e);
         }
 
-        foreach ($currentDir as $dir) {
-            if ($dir->getFilename() != '.' && $dir->getFilename() != '..') {
-                $files[] = $dir->getPathname();
+        foreach ($currentDir as $file) {
+            if ($file->getFilename() != '.' && $file->getFilename() != '..') {
+               if (in_array(strtolower($file->getExtension()), ['jpg', 'png', 'gif', 'jpeg'])) {
+                   $files[] = $file->getPathname();
+               }
             }
         }
 
@@ -112,4 +119,4 @@ class Server
             die($e);
         }
     }
-}
+} 
