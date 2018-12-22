@@ -58,8 +58,8 @@ class Server
     {
         $files = [];
         foreach ($this->mainDir as $dir) {
-            if ($mainDir->getFilename() != '.' && $mainDir->getFilename() != '..') {
-                if (in_array(strtolower($mainDir->getExtension()), ['jpg', 'png', 'gif', 'jpeg'])) {
+            if ($dir->getFilename() != '.' && $dir->getFilename() != '..') {
+                if (in_array(strtolower($dir->getExtension()), ['jpg', 'png', 'gif', 'jpeg'])) {
                     $files[] = $dir->getPathname();
                 }
              }
