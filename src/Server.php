@@ -16,14 +16,23 @@ class Server
      */
     private $mainDir;
 
+
+    /**
+     * The size that the server must render an image
+     * @var array
+     */
+    private $size = [];
+
+
     /**
      * Server constructor.
      * @param string $mainDir
      */
-    public function __construct(string $mainDir)
+    public function __construct(string $mainDir, array $size)
     {
        try {
            $this->mainDir = new \DirectoryIterator($mainDir);
+           $this->size = $size;
        } catch (\Exception $e) {
            die($e);
        }
@@ -114,6 +123,11 @@ class Server
         try {
             $image = new ImageManager();
             $image = $image->make($this->getInSubDirs($dirIndex, $fileIndex));
+           
+            if (!empty($this->size)) {
+                $image = $image->fit($this->size['height'], $this->size['width']);
+            }
+
             echo $image->response('jpeg');
         } catch (\Exception $e) {
             die($e);
