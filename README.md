@@ -20,26 +20,22 @@ here is an exemple :
 <?php
 require("vendor/autoload.php");
 $main = dirname(__DIR__, 3) . "Users\\Bernard-ng\\pictures\\NGPICTURES";
-$server = new \Ng\Photoserver\Server($main);
+$current = __DIR__;
+
+$server = new \Ng\Photoserver\Server(compact('main', 'current'));
 $server->render();
 ```
 
 ## Run the server
 after installing and configuring, you have to run the server, if you are using **Xampp**, **Wampp**, etc.. , the installation of the photoserver
 should be in the **htdocs** or **www** directory.
-
-if you are using **php development server** :
-```
-php -S localhost:4080 index.php
-```
-**Notice :** you can use any available port for the **php development server**.
+photoserver 2.0.0 is only running on **apache server**
 
 ## Usage
 to use your new photoserver, juste load this url if your are using **Xampp** or else :
 ``` http://localhost/photoserver_path```
 
-if you are using the php dev server just use the link below :
-``` http://localhost:4080```
+or create a virtual host
 
 ## Help
 need to make this greater than it is, so your contributions are welcome
