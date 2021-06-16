@@ -1,4 +1,4 @@
-# PhotoServer
+# [Learning Project] PhotoServer
 
 offline photoserver for development, serves randomly photos that are hosted on your computer via a web interface; 
 this is a "lorem ipsum" but for photos hosted in your computer.
